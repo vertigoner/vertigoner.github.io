@@ -14,10 +14,10 @@ const H = (window.innerHeight
 || document.documentElement.clientHeight
 || document.body.clientHeight) - MARGIN;
 
-let horzBaseLen = H / 3;
+let horzBaseLen = W / 3;
 let vertBaseLen = W / 3;
-let cornerBaseLen = H / 3;
-let numLines = 5;
+let cornerBaseLen = W / 3;
+let numLines = 10;
 let cluster = {
   left: new LineCluster(1, H / 2, 3 * PI / 2, PI / 2, horzBaseLen, numLines, LINE_CLASS.RED),
   mid1: new LineCluster(W / 2, H / 2, 0, PI, horzBaseLen, numLines, LINE_CLASS.YELLOW),

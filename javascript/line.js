@@ -21,16 +21,18 @@ class LineCluster {
     this.baseLen = baseLen;
     this.numLines = numLines;
     this.lineClass = lineClass;
-    this.dTheta = Math.abs(rad2 - rad1) / numLines;
+    this.dTheta = (Math.abs(rad2 - rad1) - (Math.abs(rad2 - rad1) / numLines)) / numLines;
   }
 
   genSvgLines() {
     let lines = [];
+    let thetaI = this.rad1 + this.dTheta / 2;
 
-    for (let theta = this.rad1; lines.length <= this.numLines; theta = (theta + this.dTheta) % (2 * Math.PI)) {
-      lines.push(genSvgLine(this.cx, this.cy, this.cx + this.baseLen * Math.cos(theta),
-        this.cy - this.baseLen * Math.sin(theta), this.lineClass));
-        console.log("" + theta);
+    for (let theta = thetaI; lines.length <= this.numLines; theta = (theta + this.dTheta) % (2 * Math.PI)) {
+      let randTheta = theta + Math.random() * (this.dTheta * this.numLines / 10) - (this.dTheta * this.numLines / 20);
+      let randLen = this.baseLen * (Math.random() + 0.5);
+      lines.push(genSvgLine(this.cx, this.cy, this.cx + randLen * Math.cos(randTheta),
+        this.cy - randLen * Math.sin(randTheta), this.lineClass));
     }
 
     return lines;
