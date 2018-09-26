@@ -1,6 +1,7 @@
 body {
   font-family: "Helvetica";
   text-align: center;
+  background-color: #FFFFFF;
 }
 
 line {
@@ -8,6 +9,14 @@ line {
   stroke-linecap="round"
 }
 
-.leftLine {
+.redLine {
   stroke:red;
+}
+
+.yellowLine {
+  stroke:yellow;
+}
+
+.blueLine {
+  stroke:blue;
 }
