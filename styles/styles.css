@@ -6,7 +6,7 @@ body {
 
 line {
   stroke-width:2;
-  stroke-linecap="round"
+  stroke-linecap:round;
 }
 
 .redLine {
