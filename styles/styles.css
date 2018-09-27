@@ -10,13 +10,13 @@ line {
 }
 
 .redLine {
-  stroke:red;
+  stroke:#fc514b;
 }
 
 .yellowLine {
-  stroke:yellow;
+  stroke:#ffdc00;
 }
 
 .blueLine {
-  stroke:blue;
+  stroke:#504af9;
 }
