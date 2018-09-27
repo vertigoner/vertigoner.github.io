@@ -22,7 +22,7 @@ class LineCluster {
     this.numLines = numLines;
     this.lineClass = lineClass;
     this.dTheta = (Math.abs(rad2 - rad1) - (Math.abs(rad2 - rad1) / numLines)) / numLines;
-    this.textDims = [];
+    this.textCoords = [];
   }
 
   genSvgLines() {
@@ -37,15 +37,15 @@ class LineCluster {
       lines.push(genSvgLine(this.cx, this.cy, x, y, this.lineClass));
 
       if (lines.length % Math.floor(this.numLines / 3) == 0) {
-        this.storeTextDims(theta, randLen);
+        this.storeTextCoords(x, y, theta);
       }
     }
 
     return lines;
   }
 
-  storeTextDims(thetaVal, dVal) {
-      this.textDims.push({theta: thetaVal, d: dVal});
+  storeTextCoords(xVal, yVal, thetaVal) {
+      this.textCoords.push({x: xVal, y: yVal, theta: thetaVal});
   }
 }
 
@@ -62,10 +62,13 @@ function genSvgLine(x1, y1, x2, y2, lineClass) {
 // helper function to create a text svg element
 function genSvgText(text, x, y, dx, dy, theta) {
   theta = theta / Math.PI * 180; // convert to degrees
+  if (theta > 180) {
+    theta -= 360;
+  }
   let svgText = document.createElementNS("http://www.w3.org/2000/svg", "text");
 
   setAttributes(svgText, {"x": x.toString(), "y": y.toString(), "dx": dx.toString(),
-    "dy": dy.toString(), "transform":"rotate(" + theta + ", " + x + ", " + y + ")"});
+    "dy": dy.toString(), "transform":"rotate(" + -theta + ", " + x + ", " + y + ")"});
   svgText.innerHTML = text;
 
   return svgText;

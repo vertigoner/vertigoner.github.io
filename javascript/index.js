@@ -7,7 +7,6 @@
 
 const PI = Math.PI;
 const MARGIN = 20;
-const TEXT_OFFSET = 0;
 const W = (window.innerWidth
 || document.documentElement.clientWidth
 || document.body.clientWidth) - MARGIN;
@@ -26,6 +25,8 @@ let horzBaseLen = Math.max(W, H) / 3;
 let vertBaseLen = Math.max(W, H) / 3;
 let cornerBaseLen = Math.max(W, H) / 3;
 let numLines = 10;
+let textOffsetX = 0;
+let textOffsetY = 0;
 let cluster = {
   left: new LineCluster(1, H / 2, 3 * PI / 2, PI / 2, horzBaseLen, numLines, LINE_CLASS.RED),
   mid1: new LineCluster(W / 2, H / 2, 0, PI, horzBaseLen, numLines, LINE_CLASS.YELLOW),
@@ -60,20 +61,16 @@ function initSVG(svg) {
   let linkGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   linkGroup.setAttribute("class", "pageLinks");
 
-  let textDims = cluster.left.textDims.concat(cluster.right.textDims);
+  let textCoords = cluster.left.textCoords.concat(cluster.right.textCoords);
+  let indSet = new Set(); // to store previously used indeces
   for (let key of Object.keys(pageLinks)) {
-    let randInd = Math.floor(Math.random() * textDims.length);
-    console.log(randInd);
-    let x, y;
-    if (randInd < textDims.length / 2) {
-      x = cluster.left.cx;
-      y = cluster.left.cy;
-    } else {
-      x = cluster.right.cx;
-      y = cluster.right.cy;
-    }
+    do {
+      var randInd = Math.floor(Math.random() * textCoords.length);
+    } while (indSet.has(randInd));
+    indSet.add(randInd);
 
-    linkGroup.appendChild(genSvgText(key, x, y, textDims[randInd].d, TEXT_OFFSET, textDims[randInd].theta));
+    linkGroup.appendChild(genSvgText(key, textCoords[randInd].x, textCoords[randInd].y,
+      textOffsetX, textOffsetY, textCoords[randInd].theta));
   }
 
   svg.appendChild(linkGroup);
