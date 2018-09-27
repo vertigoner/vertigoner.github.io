@@ -7,7 +7,7 @@
 
 const PI = Math.PI;
 const MARGIN = 20;
-const TEXT_OFFSET = 3;
+const TEXT_OFFSET = 0;
 const W = (window.innerWidth
 || document.documentElement.clientWidth
 || document.body.clientWidth) - MARGIN;
@@ -62,12 +62,10 @@ function initSVG(svg) {
 
   let textDims = cluster.left.textDims.concat(cluster.right.textDims);
   for (let key of Object.keys(pageLinks)) {
-    let rand = Math.floor(Math.random() * textDims.length);
-    console.log("" + textDims[rand]);
-
+    let randInd = Math.floor(Math.random() * textDims.length);
+    console.log(randInd);
     let x, y;
-
-    if (rand < textDims.length / 2) {
+    if (randInd < textDims.length / 2) {
       x = cluster.left.cx;
       y = cluster.left.cy;
     } else {
@@ -75,7 +73,7 @@ function initSVG(svg) {
       y = cluster.right.cy;
     }
 
-    linkGroup.appendChild(genSvgText(key, x, y, textDims[rand].d, TEXT_OFFSET, textDims[rand].theta));
+    linkGroup.appendChild(genSvgText(key, x, y, textDims[randInd].d, TEXT_OFFSET, textDims[randInd].theta));
   }
 
   svg.appendChild(linkGroup);

@@ -49,7 +49,8 @@ class LineCluster {
   }
 }
 
-function genSvgLine(x1, y1, x2, y2, lineClass=LINE_CLASS.RED) {
+// helper function to create a line svg element
+function genSvgLine(x1, y1, x2, y2, lineClass) {
   let svgLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
   setAttributes(svgLine, {"x1": x1.toString(), "y1": y1.toString(),
@@ -58,16 +59,19 @@ function genSvgLine(x1, y1, x2, y2, lineClass=LINE_CLASS.RED) {
   return svgLine;
 }
 
+// helper function to create a text svg element
 function genSvgText(text, x, y, dx, dy, theta) {
+  theta = theta / Math.PI * 180; // convert to degrees
   let svgText = document.createElementNS("http://www.w3.org/2000/svg", "text");
 
   setAttributes(svgText, {"x": x.toString(), "y": y.toString(), "dx": dx.toString(),
-    "dy": dy.toString(), "transform":"rotate(" + theta + ")"});
+    "dy": dy.toString(), "transform":"rotate(" + theta + ", " + x + ", " + y + ")"});
   svgText.innerHTML = text;
 
   return svgText;
 }
 
+// helper function to set multiple attributes concisely
 function setAttributes(el, attrs) {
   for (let key in attrs) {
     el.setAttribute(key, attrs[key]);
