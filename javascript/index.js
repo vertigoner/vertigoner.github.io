@@ -74,10 +74,38 @@ function initSVG(svg) {
   }
 }
 
-function showMenu() {
+async function showMenu() {
+  // letter animation
+  let letters = document.getElementById("name").getElementsByTagName("*");
+
+  let tTotal = 750; // ms
+  let dT = 10; // ms
+  let dThetas = [];
+  for (let letter of letters) {
+    dThetas.push(-1 * letter.transform.baseVal[0].angle / (tTotal / dT));
+  }
+
+  let endCond = false;
+  let tElapsed = 0;
+  do {
+    for (let i = 0; i < letters.length; i++) {
+      let theta = letters[i].transform.baseVal[0].angle + dThetas[i];
+      letters[i].setAttribute("transform", "rotate(" + theta + ", "
+        + nameConfig[i].x + ", " + nameConfig[i].y + ")");
+      endCond = letters[i].transform.baseVal[0].angle == 0;
+    }
+    await sleep(dT);
+    tElapsed += dT;
+  } while (!endCond && tElapsed < tTotal);
+
+  // show overlay
   document.getElementById("overlay").style.display = "block";
 }
 
 function hideMenu() {
   document.getElementById("overlay").style.display = "none";
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

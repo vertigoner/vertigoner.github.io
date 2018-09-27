@@ -71,12 +71,3 @@ function setAttributes(el, attrs) {
     el.setAttribute(key, attrs[key]);
   }
 }
-
-function wait(t) {
-    timer.start();
-    setTimeout(stopWaiting, t);
-}
-
-function stopWaiting() {
-    timer.stop();
-}
