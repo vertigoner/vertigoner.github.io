@@ -22,7 +22,6 @@ class LineCluster {
     this.numLines = numLines;
     this.lineClass = lineClass;
     this.dTheta = (Math.abs(rad2 - rad1) - (Math.abs(rad2 - rad1) / numLines)) / numLines;
-    this.textCoords = [];
   }
 
   genSvgLines() {
@@ -35,17 +34,9 @@ class LineCluster {
       let x = this.cx + randLen * Math.cos(randTheta);
       let y = this.cy - randLen * Math.sin(randTheta);
       lines.push(genSvgLine(this.cx, this.cy, x, y, this.lineClass));
-
-      if (lines.length % Math.floor(this.numLines / 3) == 0) {
-        this.storeTextCoords(x, y, theta);
-      }
     }
 
     return lines;
-  }
-
-  storeTextCoords(xVal, yVal, thetaVal) {
-      this.textCoords.push({x: xVal, y: yVal, theta: thetaVal});
   }
 }
 

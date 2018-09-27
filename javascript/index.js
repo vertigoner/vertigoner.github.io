@@ -42,6 +42,9 @@ let cluster = {
 
 initSVG(document.getElementById('mainSVG'));
 
+document.getElementById("mid1").addEventListener("click", showMenu);
+document.getElementById("mid2").addEventListener("click", showMenu);
+
 function initSVG(svg) {
   svg.setAttribute("width", W);
   svg.setAttribute("height", H);
@@ -55,23 +58,14 @@ function initSVG(svg) {
       clusterGroup.appendChild(line);
     }
 
-    svg.appendChild(clusterGroup);
+    svg.getElementById("lines").appendChild(clusterGroup);
   }
+}
 
-  let linkGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  linkGroup.setAttribute("class", "pageLinks");
+function showMenu() {
+  document.getElementById("overlay").style.display = "block";
+}
 
-  let textCoords = cluster.left.textCoords.concat(cluster.right.textCoords);
-  let indSet = new Set(); // to store previously used indeces
-  for (let key of Object.keys(pageLinks)) {
-    do {
-      var randInd = Math.floor(Math.random() * textCoords.length);
-    } while (indSet.has(randInd));
-    indSet.add(randInd);
-
-    linkGroup.appendChild(genSvgText(key, textCoords[randInd].x, textCoords[randInd].y,
-      textOffsetX, textOffsetY, textCoords[randInd].theta));
-  }
-
-  svg.appendChild(linkGroup);
+function hideMenu() {
+  document.getElementById("overlay").style.display = "none";
 }
