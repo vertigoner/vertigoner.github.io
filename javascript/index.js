@@ -7,6 +7,7 @@
 
 const PI = Math.PI;
 const MARGIN = 20;
+const COLORS = ["#fc514b", "#ffdc00", "#504af9"];
 const W = (window.innerWidth
 || document.documentElement.clientWidth
 || document.body.clientWidth) - MARGIN;
@@ -25,8 +26,12 @@ let horzBaseLen = Math.max(W, H) / 3;
 let vertBaseLen = Math.max(W, H) / 3;
 let cornerBaseLen = Math.max(W, H) / 3;
 let numLines = 10;
-let textOffsetX = 0;
-let textOffsetY = 0;
+let nameConfig = [
+  {text: "N", x: W / 3, y: H / 3},
+  {text: "O", x: 2 * W / 3, y: H / 3},
+  {text: "A", x: W / 3, y: 2 * H / 3},
+  {text: "H", x: 2 * W / 3, y: 2 * H / 3}
+];
 let cluster = {
   left: new LineCluster(1, H / 2, 3 * PI / 2, PI / 2, horzBaseLen, numLines, LINE_CLASS.RED),
   mid1: new LineCluster(W / 2, H / 2, 0, PI, horzBaseLen, numLines, LINE_CLASS.YELLOW),
@@ -42,8 +47,7 @@ let cluster = {
 
 initSVG(document.getElementById('mainSVG'));
 
-document.getElementById("mid1").addEventListener("click", showMenu);
-document.getElementById("mid2").addEventListener("click", showMenu);
+document.getElementById("name").addEventListener("click", showMenu);
 
 function initSVG(svg) {
   svg.setAttribute("width", W);
@@ -59,6 +63,14 @@ function initSVG(svg) {
     }
 
     svg.getElementById("lines").appendChild(clusterGroup);
+  }
+
+  let nameGroup = svg.getElementById("name");
+  for (let letter of nameConfig) {
+    let letterSvg = genSvgText(letter.text, letter.x, letter.y, Math.random() * 360);
+    letterSvg.setAttribute("class", "nameLetter");
+    letterSvg.style.fill = COLORS[Math.floor(Math.random() * COLORS.length)];
+    nameGroup.appendChild(letterSvg);
   }
 }
 

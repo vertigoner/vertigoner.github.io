@@ -51,11 +51,11 @@ function genSvgLine(x1, y1, x2, y2, lineClass) {
 }
 
 // helper function to create a text svg element
-function genSvgText(text, x, y, dx, dy, theta) {
-  theta = theta / Math.PI * 180; // convert to degrees
-  if (theta > 180) {
-    theta -= 360;
-  }
+function genSvgText(text, x, y, theta, dx=0, dy=0) {
+  // theta = theta / Math.PI * 180; // convert to degrees
+  // if (theta > 180) {
+  //   theta -= 360;
+  // }
   let svgText = document.createElementNS("http://www.w3.org/2000/svg", "text");
 
   setAttributes(svgText, {"x": x.toString(), "y": y.toString(), "dx": dx.toString(),
@@ -70,4 +70,13 @@ function setAttributes(el, attrs) {
   for (let key in attrs) {
     el.setAttribute(key, attrs[key]);
   }
+}
+
+function wait(t) {
+    timer.start();
+    setTimeout(stopWaiting, t);
+}
+
+function stopWaiting() {
+    timer.stop();
 }

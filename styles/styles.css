@@ -17,12 +17,14 @@ body {
     z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
 }
 
-.grow:hover {
-  transform: scale(2);
+#name {
+  font-size: 50px;
+  transition: all 0.5s;
+  transform-origin: 50% 50%;
 }
 
-#name {
-  font: bold 30px;
+#name:hover {
+  transform: scale(1.05);
 }
 
 line {
