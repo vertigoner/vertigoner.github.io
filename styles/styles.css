@@ -27,6 +27,7 @@ body {
 line {
   stroke-width:1;
   stroke-linecap:round;
+  stroke:#fc514b;
 }
 
 .redLine {

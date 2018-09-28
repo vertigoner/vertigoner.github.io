@@ -7,7 +7,6 @@
 
 const PI = Math.PI;
 const MARGIN = 20;
-const COLORS = ["#fc514b", "#ffdc00", "#504af9"];
 const W = (window.innerWidth
 || document.documentElement.clientWidth
 || document.body.clientWidth) - MARGIN;
@@ -15,23 +14,11 @@ const H = (window.innerHeight
 || document.documentElement.clientHeight
 || document.body.clientHeight) - MARGIN;
 
-const pageLinks = {
-  "Inspired by Sol Lewitt - Wall Drawing 273": "url",
-  "Noah Roberts": "url",
-  "About Me": "url",
-  "Projects": "url"
-}
 
 let horzBaseLen = Math.max(W, H) / 3;
 let vertBaseLen = Math.max(W, H) / 3;
 let cornerBaseLen = Math.max(W, H) / 3;
 let numLines = 10;
-let nameConfig = [
-  {text: "N", x: W / 3, y: H / 3},
-  {text: "O", x: 2 * W / 3, y: H / 3},
-  {text: "A", x: W / 3, y: 2 * H / 3},
-  {text: "H", x: 2 * W / 3, y: 2 * H / 3}
-];
 let cluster = {
   left: new LineCluster(1, H / 2, 3 * PI / 2, PI / 2, horzBaseLen, numLines, LINE_CLASS.RED),
   mid1: new LineCluster(W / 2, H / 2, 0, PI, horzBaseLen, numLines, LINE_CLASS.YELLOW),
@@ -45,32 +32,40 @@ let cluster = {
   botRight: new LineCluster(W - 1, H - 1, PI / 2, PI, cornerBaseLen, numLines, LINE_CLASS.BLUE)
 };
 
-initSVG(document.getElementById('mainSVG'));
+const COLORS = ["#fc514b", "#ffdc00", "#504af9"];
+let pickRandColor = function() {
+  return COLORS[Math.floor(Math.random() * COLORS.length)];
+}
+let name = {
+  n: new AnimatedText("N", W / 3, H / 3, W / 4, H / 10, Math.random() * 360, pickRandColor()),
+  o: new AnimatedText("O", 2 * W / 3, H / 3, W / 4, H / 10, Math.random() * 360, pickRandColor()),
+  a: new AnimatedText("A", W / 3, 2 * H / 3, W / 4, H / 10, Math.random() * 360, pickRandColor()),
+  h: new AnimatedText("H", 2 * W / 3, 2 * H / 3, W / 4, H / 10, Math.random() * 360, pickRandColor())
+};
+
+let svg = document.getElementById('mainSVG');
+svg.setAttribute("width", W);
+svg.setAttribute("height", H);
+
+initHome(Snap(svg));
 
 document.getElementById("name").addEventListener("click", showMenu);
 
-function initSVG(svg) {
-  svg.setAttribute("width", W);
-  svg.setAttribute("height", H);
+function initHome(s) {
 
-  for (let key of Object.keys(cluster)) {
-    let clusterGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    clusterGroup.setAttribute("class", "cluster");
-    clusterGroup.setAttribute("id", key);
-
-    for (let line of cluster[key].genSvgLines()) {
-      clusterGroup.appendChild(line);
-    }
-
-    svg.getElementById("lines").appendChild(clusterGroup);
+  // name
+  let nameGroup = s.g();
+  nameGroup.node.id = "name";
+  for (let key of Object.keys(name)) {
+    nameGroup.add(name[key].generate(s));
   }
 
-  let nameGroup = svg.getElementById("name");
-  for (let letter of nameConfig) {
-    let letterSvg = genSvgText(letter.text, letter.x, letter.y, Math.random() * 360);
-    letterSvg.setAttribute("class", "nameLetter");
-    letterSvg.style.fill = COLORS[Math.floor(Math.random() * COLORS.length)];
-    nameGroup.appendChild(letterSvg);
+  // lines
+  for (let key of Object.keys(cluster)) {
+    let clusterGroup = s.g().attr({class: "cluster"});
+    clusterGroup.node.id = key; // for some reason snap.svg doesn't let you set id easily
+
+    clusterGroup.add(cluster[key].generate(s));
   }
 }
 
@@ -104,8 +99,4 @@ async function showMenu() {
 
 function hideMenu() {
   document.getElementById("overlay").style.display = "none";
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
