@@ -37,10 +37,10 @@ let pickRandColor = function() {
   return COLORS[Math.floor(Math.random() * COLORS.length)];
 }
 let name = {
-  n: new AnimatedText("N", W / 3, H / 3, W / 4, H / 10, Math.random() * 360, pickRandColor()),
-  o: new AnimatedText("O", 2 * W / 3, H / 3, W / 4, H / 10, Math.random() * 360, pickRandColor()),
-  a: new AnimatedText("A", W / 3, 2 * H / 3, W / 4, H / 10, Math.random() * 360, pickRandColor()),
-  h: new AnimatedText("H", 2 * W / 3, 2 * H / 3, W / 4, H / 10, Math.random() * 360, pickRandColor())
+  n: new AnimatedText("N", W / 3, H / 3, W / 5, H / 10, Math.random() * 360, pickRandColor()),
+  o: new AnimatedText("O", 2 * W / 3, H / 3, 2 * W / 5, H / 10, Math.random() * 360, pickRandColor()),
+  a: new AnimatedText("A", W / 3, 2 * H / 3, 3 * W / 5, H / 10, Math.random() * 360, pickRandColor()),
+  h: new AnimatedText("H", 2 * W / 3, 2 * H / 3, 4 * W / 5, H / 10, Math.random() * 360, pickRandColor())
 };
 
 let svg = document.getElementById('mainSVG');
@@ -69,30 +69,11 @@ function initHome(s) {
   }
 }
 
-async function showMenu() {
+function showMenu() {
   // letter animation
-  let tTotal = 750; // ms
-  let dT = 10; // ms
-  let dThetas = [];
-  let nameKeys = Object.keys(name);
-  for (let key of nameKeys) {
-    dThetas.push(-1 * name[key].theta / (tTotal / dT));
+  for (let key of Object.keys(name)) {
+    name[key].menuAnimate(500);
   }
-
-  let endCond = false;
-  let tElapsed = 0;
-  do {
-    for (let i = 0; i < nameKeys.length; i++) {
-      let letter = name[nameKeys[i]];
-      letter.theta += dThetas[i];
-      letter.snapText.transform("rotate(" + letter.theta + ", " + letter.x + ", " + letter.y + ")");
-      endCond = letter.theta == 0;
-    }
-    await sleep(dT);
-    tElapsed += dT;
-  } while (!endCond && tElapsed < tTotal);
-
-  name.n.snapText.animate({})
 
   // show overlay
   document.getElementById("overlay").style.display = "block";

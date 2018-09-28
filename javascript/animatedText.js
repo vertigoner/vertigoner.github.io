@@ -28,4 +28,9 @@ class AnimatedText {
 
     return text;
   }
+
+  menuAnimate(t) { // time in ms
+    this.snapText.animate({"x": this.xf.toString(), "y": this.yf.toString(),
+      "transform": "rotate(0, " + this.xf + ", " + this.yf + ")"}, t);
+  }
 }
