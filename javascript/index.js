@@ -71,27 +71,28 @@ function initHome(s) {
 
 async function showMenu() {
   // letter animation
-  let letters = document.getElementById("name").getElementsByTagName("*");
-
   let tTotal = 750; // ms
   let dT = 10; // ms
   let dThetas = [];
-  for (let letter of letters) {
-    dThetas.push(-1 * letter.transform.baseVal[0].angle / (tTotal / dT));
+  let nameKeys = Object.keys(name);
+  for (let key of nameKeys) {
+    dThetas.push(-1 * name[key].theta / (tTotal / dT));
   }
 
   let endCond = false;
   let tElapsed = 0;
   do {
-    for (let i = 0; i < letters.length; i++) {
-      let theta = letters[i].transform.baseVal[0].angle + dThetas[i];
-      letters[i].setAttribute("transform", "rotate(" + theta + ", "
-        + nameConfig[i].x + ", " + nameConfig[i].y + ")");
-      endCond = letters[i].transform.baseVal[0].angle == 0;
+    for (let i = 0; i < nameKeys.length; i++) {
+      let letter = name[nameKeys[i]];
+      letter.theta += dThetas[i];
+      letter.snapText.transform("rotate(" + letter.theta + ", " + letter.x + ", " + letter.y + ")");
+      endCond = letter.theta == 0;
     }
     await sleep(dT);
     tElapsed += dT;
   } while (!endCond && tElapsed < tTotal);
+
+  name.n.snapText.animate({})
 
   // show overlay
   document.getElementById("overlay").style.display = "block";

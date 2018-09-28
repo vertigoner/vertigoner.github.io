@@ -24,6 +24,8 @@ class AnimatedText {
     text.node.setAttribute("class", "nameLetter");
     text.node.style.fill = this.fill;
 
+    this.snapText = text;
+
     return text;
   }
 }
